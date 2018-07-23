@@ -4,6 +4,7 @@ function prime (n) {
 	for (let i=2;i<=Math.sqrt(n);i++) {
 		for (let j=i;j<n;j++) {
 			let target = i*j
+			if ( target>n ) break;
 			delete prime_table[target]
 		}
 	}

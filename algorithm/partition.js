@@ -12,5 +12,5 @@ function pratition(n,m) {
         return pratition(n,n);
 }
 
-let n = 5
+let n = 8
 console.log(pratition(n,n));

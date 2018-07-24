@@ -6,7 +6,8 @@
 
 因為是要練習實作，所以資料結構實作的方式幾乎都是用link-list來當基底(如果用陣列就沒意義啦)
 
-## 已完成
+## 資料結構
+### 已完成
  
 - LinkList
 - Stack
@@ -20,6 +21,18 @@
 - Graph
   - 用array取代link-list(偷懶)
 
-## 失敗
+### 失敗
  - RedBlackTree
   - 卡在旋轉
+
+## 演算法
+### 數學類
+
+ - factorial
+   - 遞迴,dp雙版本
+ - fibonacci
+   - 遞迴,dp雙版本
+ - prime
+   - 演算法用埃氏篩法
+ - GCD
+ - LCM

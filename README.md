@@ -36,3 +36,5 @@
    - 演算法用埃氏篩法
  - GCD
  - LCM
+ - partition
+   - 遞迴,dp雙版本

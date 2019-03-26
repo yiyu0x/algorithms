@@ -1,97 +1,124 @@
 #coding=utf-8
-RESOURCES = [ 10, 5, 7 ]
-ALLOCATED = [  [0, 1, 0],
-               [3, 0, 2],
-               [3, 0, 2],
-               [2, 1, 1],
-               [0, 0, 2]
+RESOURCES = [10, 5, 7]
+ALLOCATED = [[0, 1, 0],
+             [2, 0, 0],
+             [3, 0, 2],
+             [2, 1, 1],
+             [0, 0, 2]
             ]
-MAX =       [  [7, 5, 3],
-               [3, 2, 2],
-               [9, 0, 2],
-               [2, 2, 2],
-               [4, 3, 3]
+MAX       = [[7, 5, 3],
+             [3, 2, 2],
+             [9, 0, 2],
+             [2, 2, 2],
+             [4, 3, 3]
             ]
-NEED = []
-AVAILABLE = RESOURCES.copy();
-while True :
-   backup = AVAILABLE
-   for i in range(len(ALLOCATED)) :
-      AVAILABLE[0] -= ALLOCATED[i][0]
-      AVAILABLE[1] -= ALLOCATED[i][1]
-      AVAILABLE[2] -= ALLOCATED[i][2]
-   
-   print('ALLOCATED', 'AVAILABLE')
-   for i, e in enumerate(ALLOCATED) :
-      if i == 0:
-         print(e, AVAILABLE)
-      else:
-         print(e)
-   print()
+NEED      = []
+AVAILABLE = []
+SAFE_SEQ  = []
+def updateNeed():
+	NEED.clear()
+	for m, a in zip(MAX, ALLOCATED):
+		NEED.append([m[0]-a[0], m[1]-a[1], m[2]-a[2]]) 
 
-   req = int(input('request 0,1,2,3,4 ... '))
-   a, b, c = input('allocate a b c ... ').split()
-   backup = AVAILABLE
-   if int(a) > AVAILABLE[0] or int(b) > AVAILABLE[1] or int(c) > AVAILABLE[2] :
-      print('REJECTED')
-      print('------------------------------------')
-      AVAILABLE = backup
-      continue
+def updateAvailable():
+	AVAILABLE.clear()
+	a = RESOURCES[0]
+	b = RESOURCES[1]
+	c = RESOURCES[2]
+	for i in ALLOCATED:
+		a -= i[0]
+		b -= i[1]
+		c -= i[2]
+	AVAILABLE.append(a)
+	AVAILABLE.append(b)
+	AVAILABLE.append(c)
 
-   ALLOCATED[req][0] += int(a)
-   ALLOCATED[req][1] += int(b)
-   ALLOCATED[req][2] += int(c)
-   AVAILABLE = RESOURCES.copy();
-   for i in range(len(ALLOCATED)) :
-      AVAILABLE[0] -= ALLOCATED[i][0]
-      AVAILABLE[1] -= ALLOCATED[i][1]
-      AVAILABLE[2] -= ALLOCATED[i][2]
+def printStatus():
+	print('{:^10s}{:^10s}{:^10s}'.format('MAX', 'ALLOCATED', 'NEED'))
+	for a, b, c in zip(MAX, ALLOCATED, NEED):
+		print(a, b, c)
+	print('AVAILABLE:', AVAILABLE)
 
-   for i in range(len(ALLOCATED)) :
-      tmp = []
-      tmp.append(MAX[i][0]-ALLOCATED[i][0])
-      tmp.append(MAX[i][1]-ALLOCATED[i][1])
-      tmp.append(MAX[i][2]-ALLOCATED[i][2])
-      NEED.append(tmp)
+def firstCheck(p, a, b, c):
+	# request <= need
+	n = NEED[p]
+	if a > n[0] or b > n[1] or c > n[2]:
+		return False
+	# request <= available
+	ava = AVAILABLE
+	for i in AVAILABLE:
+		if a > ava[0] or b > ava[1] or c > ava[2]:
+			return False
+	return True
+
+def agreeRequest(p, a, b, c):
+	ALLOCATED[p][0] += a
+	ALLOCATED[p][1] += b
+	ALLOCATED[p][2] += c
+	updateNeed()
+	updateAvailable()
+
+def disAgreeRequest(p, a, b, c):
+	ALLOCATED[p][0] -= a
+	ALLOCATED[p][1] -= b
+	ALLOCATED[p][2] -= c
+	updateNeed()
+	updateAvailable()
+
+def haveSafeSequence():
+	ava = AVAILABLE.copy()
+	need = NEED.copy()
+	SAFE_SEQ.clear()
+	for _ in range(5):
+		for index, i in enumerate(need):
+			if i[0] <= ava[0] and i[1] <= ava[1] and i[2] <= ava[2]:
+				# print('good', i, '<=', ava)
+				SAFE_SEQ.append('p' + str(index))
+				ava[0] += ALLOCATED[index][0]
+				ava[1] += ALLOCATED[index][1]
+				ava[2] += ALLOCATED[index][2]
+				need[index][0] = 999
+				need[index][1] = 999
+				need[index][2] = 999
+				break
+
+	return True if len(SAFE_SEQ) == 5 else False
+
+def printSeq():
+	print('Safe! safe sequence is ', end="")
+	for index, i in enumerate(SAFE_SEQ):
+		if index == 4:
+			print(i)
+		else:
+			print(i, '-> ', end="")
+
+if __name__ == '__main__':
+	updateNeed()
+	updateAvailable()
+	while True:
+		printStatus()
+		p = int(input('which process you want to request (0 ~ 4)... '))
+		a, b, c = map(int, input('how many x y z... ').split())
+		# print(p,a,b,c)
+		
+		if firstCheck(p, a, b, c):
+			agreeRequest(p, a, b, c)
+			if haveSafeSequence():
+				printSeq()
+				updateNeed()
+				updateAvailable()
+				
+			else:
+				print('Unsafe!')
+				disAgreeRequest(p, a, b, c)
+
+		else:
+			print('REJECT!')
+			continue
 
 
-   print('NEED     ', 'ALLOCATED')
-   for i, j in zip(NEED, ALLOCATED) :
-         print(i, j)
-   print()
 
-
-   SEQ = []
-   times = len(ALLOCATED)
-   backup = ALLOCATED.copy()
-   safe = 1
-   for _ in range(times):
-      safe = 0
-      for i in range(len(ALLOCATED)) :
-         if ALLOCATED[i][-1] != 'X':
-            if AVAILABLE[0] >= NEED[i][0] and AVAILABLE[1] >= NEED[i][1] and AVAILABLE[2] >= NEED[i][2] :
-               AVAILABLE[0] += ALLOCATED[i][0]
-               AVAILABLE[1] += ALLOCATED[i][1]
-               AVAILABLE[2] += ALLOCATED[i][2]
-               ALLOCATED[i].append('X')
-               SEQ.append(i)
-               # print(ALLOCATED)
-               print('test allocated->', i)
-               safe = 1
-               break
-      if safe == 0 :
-         print('***UNSAFE***')
-         allocated = backup
-         break
-   if safe == 1 :
-      print()
-      print('request: p'+str(req)+'-->', a, b, c)
-      print('sqquence: ', SEQ)
-      print('***SAFE***')
-
-   print('NEED     ', 'ALLOCATED')
-   for i, j in zip(NEED, ALLOCATED) :
-         print(i, j)
-   print()
-   # print(AVAILABLE)
-   # print(ALLOCATED)
+# while True :
+# updateNeed()
+# print(NEED)
+# print(AVAILABLE)

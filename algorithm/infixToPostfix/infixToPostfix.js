@@ -21,6 +21,9 @@ function getPostfix(infix) {
 	let stack = []
 	let postfix = ''
 	for (let i = 0; i < infix.length; i++) {
+		// debug
+		// console.log('postfix:', postfix)
+		// console.log('stack:', stack)
 		if (infix[i] == '+' || infix[i] == '-' || infix[i] == '*' || infix[i] == '/'
 			|| infix[i] == '(' || infix[i] == ')') {
 			
@@ -52,5 +55,6 @@ function getPostfix(infix) {
 }
 inFix = '((A+(B*C))-D)' // ABC*+D-
 inFix = 'a+b/c+d*k' // abc/dk*++
+inFix = 'a/(b-c*d)+e-f*g'
 postFix = getPostfix(inFix)
 console.log(postFix)

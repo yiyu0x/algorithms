@@ -5,7 +5,7 @@ class Node {
 	}
 }
 
-class LL {
+class SLL {
 	constructor() {
 		this.head = null
 	}
@@ -81,7 +81,7 @@ class LL {
 	}
 }
 
-let list = new LL()
+let list = new SLL()
 list.pushFront(4)
 list.pushFront(6)
 list.pushFront(2)

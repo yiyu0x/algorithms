@@ -51,5 +51,6 @@ function getPostfix(infix) {
 	return postfix
 }
 inFix = '((A+(B*C))-D)' // ABC*+D-
+inFix = 'a+b/c+d*k' // abc/dk*++
 postFix = getPostfix(inFix)
 console.log(postFix)

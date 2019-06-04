@@ -60,14 +60,30 @@ public:
 			}
 		}
 	};
+	void invert() {
+		if (head == NULL) return;
+		else {
+			Node* prev = NULL;
+			Node* current = NULL;
+			Node* next = head;
+			while (next) {
+				prev = current;
+				current = next;
+				next = next->next;
+				current->next = prev;
+			}
+			head = current;
+		}
+	}
 	void tarversal() {
 		if (head == NULL) return;
 		else {
 			Node* tmp = head;
 			while (tmp != NULL) {
-				cout << tmp->value << endl;
+				cout << tmp->value << " ";
 				tmp = tmp->next;
 			}
+			cout << endl;
 		}
 	};
 };
@@ -79,5 +95,11 @@ int main(int argc, char const *argv[]) {
 	list.insert_back(2);
 	list.insert_back(3);
 	list.delete_node(2);
+	list.insert_back(5);
+	list.insert_back(7);
+	cout << "linked-list: ";
+	list.tarversal();
+	cout << "invert:      ";
+	list.invert();
 	list.tarversal();
 }

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define N 6
+#define N 20
 
 void print_arr(int arr[]) {
 	for (int i = 0; i < N; i++)
@@ -37,7 +37,6 @@ int main(int argc, char const *argv[]) {
 	int arr[N];
 	for (int i = 0; i < N; i++)
 		arr[i] = (rand()%50)+1;
-	print_arr(arr);
 	quick_sort(arr, 0, N-1);
 	print_arr(arr);
 	return 0;

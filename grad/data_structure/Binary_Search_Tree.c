@@ -120,6 +120,26 @@ void inorder_sucessor(Node* root, int value) {
 	else
 		printf("%d has no inorder successor.\n", value);
 }
+
+void levelorder_traversal(Node* root) {
+	Node* queue[50];
+	int front = 0;
+	int rear = 0;
+	if (root == NULL) return;
+	printf("\nlevel order:");
+	queue[rear++] = root;
+	do {
+		//dequeue
+		Node* curr = queue[front++];
+		printf("%d -> ", curr->value);
+		if (curr->left != NULL)
+			queue[rear++] = curr->left;
+		if (curr->right != NULL)
+			queue[rear++] = curr->right;
+	} while (front != rear);
+	
+}
+
 int main(int argc, char const *argv[]) {
 
 	Node *root = NULL;
@@ -132,5 +152,6 @@ int main(int argc, char const *argv[]) {
 	delete(root, 3);
 	inorder_traversal(root);
 	inorder_sucessor(root, 5);
+	levelorder_traversal(root);
 	return 0;
 }

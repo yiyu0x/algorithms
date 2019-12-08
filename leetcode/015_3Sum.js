@@ -20,9 +20,7 @@ let x = function(nums) {
 			}
 		}
 	}
-	return Array.from(
-		new Set(res.map((x) => JSON.stringify(x)))).map((x) => JSON.parse(x)
-	).sort((x, y) => x[0] - y[0])
+	return Array.from(new Set(res.map((x) => JSON.stringify(x)))).map((x) => JSON.parse(x)).sort((x, y) => x[0] - y[0])
 }
 
 console.log(x([-1, 0, 1, 2, -1, -4]))

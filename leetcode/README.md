@@ -15,3 +15,8 @@
 - 17. Letter Combinations of a Phone Number
 
 先建立好索引關係，之後用 DFS 走訪即可。
+
+- 19. Remove Nth Node From End of List
+
+嘗試走訪一遍就刪除，先設定兩指標，間格為 n（倒數第 n 個的 n），兩指標同時往後移動，只要後面的指標到達 null，則前面的指標指向的值即是要刪除的節點。
+走訪時可以將前面指標的上一個節點暫存，如此一來可以用該節點來刪除欲刪除之節點。

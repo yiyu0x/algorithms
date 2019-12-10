@@ -28,3 +28,7 @@
 - 022 Generate Parentheses
 
 DFS，找出全部排法，但只要 ')' 個數大於 '(' 即可跳出（不符合要求）。
+
+- 039 Combination Sum
+
+DFS，遍歷所有可能並且超過就直接放棄（return），最後將同一種組合順序不同視為相同一種可能。

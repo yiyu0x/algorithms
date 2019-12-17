@@ -11,7 +11,7 @@ let parenthesis_dfs = (l, r, ans, res) => {
 var generateParenthesis = function(n) {
 	let res = []
 	parenthesis_dfs(n, n, '', res)
-	console.log(res)
+	return res
 };
 
 generateParenthesis(3)
